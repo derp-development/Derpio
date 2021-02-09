@@ -5,7 +5,7 @@ import me.conclure.derpio.BotInfo;
 import me.conclure.derpio.command.CommandExecutor;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-public final class StopCommand implements CommandExecutor {
+public final class StopCommand extends CommandExecutor {
 
   @Override
   public String getName() {
@@ -15,10 +15,10 @@ public final class StopCommand implements CommandExecutor {
   @Override
   public Result execute(Bot bot, MessageReceivedEvent event, String[] args) {
     if (event.getAuthor().getIdLong() != BotInfo.OWNER_ID) {
-      return Result.NO_PERMISSION;
+      return ResultType.NO_PERMISSION.toResult();
     }
     event.getChannel().sendMessage("Shutting down...").complete();
     bot.shutdown();
-    return Result.SUCCESS;
+    return ResultType.NO_PERMISSION.toResult();
   }
 }

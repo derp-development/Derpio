@@ -1,9 +1,10 @@
 package me.conclure.derpio;
 
+import java.util.stream.Stream;
 import javax.security.auth.login.LoginException;
 import joptsimple.OptionSet;
 import me.conclure.derpio.command.CommandManager;
-import me.conclure.derpio.event.MessageReceivedListener;
+import me.conclure.derpio.event.AutomatedXPFactory;
 import me.conclure.derpio.storage.UserManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -15,7 +16,6 @@ public final class Bot {
   private static final Logger LOGGER = LoggerFactory.getLogger(Bot.class);
 
   private final JDA jda;
-  private final CommandManager commandManager;
   private final UserManager userManager;
 
   private Bot(String token) throws LoginException, InterruptedException {
@@ -25,9 +25,8 @@ public final class Bot {
             .setEventManager(new AnnotatedEventManager())
             .build()
             .awaitReady();
-    this.commandManager = new CommandManager(this);
     this.userManager = new UserManager();
-    this.jda.addEventListener(new MessageReceivedListener(bot));
+    this.registerEventListeners();
   }
 
   static void init(OptionSet optionSet) {
@@ -50,8 +49,13 @@ public final class Bot {
     }
   }
 
+  private void registerEventListeners() {
+    Stream.of(new AutomatedXPFactory(this), new CommandManager(this))
+        .forEach(jda::addEventListener);
+  }
+
   private void stop() {
-    this.userManager.save();
+    this.userManager.saveAll();
     this.jda.shutdown();
   }
 
