@@ -1,4 +1,4 @@
-package me.conclure.derpio.storage;
+package me.conclure.derpio.model.user;
 
 import com.google.gson.annotations.Expose;
 import java.util.concurrent.TimeUnit;
@@ -29,7 +29,7 @@ public final class UserData {
   public boolean hasChatClaimableXp() {
     long now = System.currentTimeMillis();
     long last = lastXpMessageTimestamp;
-    long difference = now-last;
+    long difference = now - last;
 
     TimeUnit cooldownUnit = BotInfo.CHAT_XP_COOLDOWN_UNIT;
     long cooldownDuration = BotInfo.CHAT_XP_COOLDOWN_DURATION;
