@@ -2,7 +2,6 @@ package me.conclure.derpio.model.user;
 
 import com.github.benmanes.caffeine.cache.RemovalCause;
 import com.github.benmanes.caffeine.cache.RemovalListener;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -28,10 +27,10 @@ public final class UserRemovalListener implements RemovalListener<Long, UserData
       @Nullable Long userID, @Nullable UserData userData, @NonNull RemovalCause cause) {
     CompletableFuture.runAsync(
             () -> {
-              //resolves a path for the specified user
+              // resolves a path for the specified user
               Path userPath = userManager.getStoragePath().resolve(userID + ".json");
 
-              //if a file for the user does not exist then we create it
+              // if a file for the user does not exist then we create it
               if (!Files.exists(userPath)) {
                 try {
                   Files.createFile(userPath);
@@ -40,7 +39,7 @@ public final class UserRemovalListener implements RemovalListener<Long, UserData
                 }
               }
 
-              //parse the data into json and write to the file
+              // parse the data into json and write to the file
               try (var writer = Files.newBufferedWriter(userPath, StandardCharsets.UTF_8)) {
                 BotInfo.GSON.toJson(userData, writer);
                 writer.flush();

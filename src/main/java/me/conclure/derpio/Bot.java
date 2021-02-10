@@ -34,9 +34,9 @@ public final class Bot {
 
   static void init(OptionSet optionSet) {
     try {
-      //getting token from arguments
+      // getting token from arguments
       String token = (String) optionSet.valueOf("token");
-      //load bot on new thread
+      // load bot on new thread
       Thread thread =
           new Thread(
               () -> {

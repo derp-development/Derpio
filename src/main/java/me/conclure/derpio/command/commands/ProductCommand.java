@@ -19,7 +19,6 @@ public final class ProductCommand extends CommandExecutor {
 
     String productLabel = args[0];
 
-
     return null;
   }
 }
