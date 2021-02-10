@@ -56,7 +56,7 @@ public final class Bot {
 
   private void registerEventListeners() {
     Stream.of(new AutomatedXPFactory(this), new CommandHandler(this))
-        .forEach(jda::addEventListener);
+        .forEach(this.jda::addEventListener);
   }
 
   private void stop() {
@@ -78,7 +78,7 @@ public final class Bot {
     this.stop();
     Bot bot = null;
     try {
-      bot = new Bot(token);
+      bot = new Bot(this.token);
     } catch (LoginException | InterruptedException e) {
       LOGGER.error(e.getMessage(), e);
     }
@@ -88,10 +88,10 @@ public final class Bot {
   }
 
   public JDA getJDA() {
-    return jda;
+    return this.jda;
   }
 
   public UserManager getUserManager() {
-    return userManager;
+    return this.userManager;
   }
 }

@@ -19,7 +19,7 @@ public final class Product {
   }
 
   public String getImageUrl() {
-    return imageUrl;
+    return this.imageUrl;
   }
 
   public void setImageUrl(String imageUrl) {
@@ -27,7 +27,7 @@ public final class Product {
   }
 
   public String getName() {
-    return name;
+    return this.name;
   }
 
   public void setName(String name) {
@@ -35,7 +35,7 @@ public final class Product {
   }
 
   public double getPrice() {
-    return price;
+    return this.price;
   }
 
   public void setPrice(double price) {

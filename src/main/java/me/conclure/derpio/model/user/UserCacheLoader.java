@@ -26,7 +26,7 @@ public final class UserCacheLoader implements CacheLoader<Long, UserData> {
     return CompletableFuture.supplyAsync(
             () -> {
               // resolves a path for the specified user
-              Path userPath = userManager.getStoragePath().resolve(userId + ".json");
+              Path userPath = this.userManager.getStoragePath().resolve(userId + ".json");
               UserData result = null;
 
               // if a file for the user does not exist then we create it
@@ -52,7 +52,7 @@ public final class UserCacheLoader implements CacheLoader<Long, UserData> {
 
               return result;
             },
-            userManager.getExecutor())
+        this.userManager.getExecutor())
         .join();
   }
 }

@@ -27,9 +27,9 @@ public final class UserManager {
                 .setUncaughtExceptionHandler((t, e) -> LOGGER.error(e.getMessage(), e))
                 .build());
 
-    if (!Files.exists(getStoragePath())) {
+    if (!Files.exists(this.getStoragePath())) {
       try {
-        Files.createDirectory(getStoragePath());
+        Files.createDirectory(this.getStoragePath());
       } catch (IOException e) {
         LOGGER.error(e.getMessage(), e);
       }
@@ -43,15 +43,15 @@ public final class UserManager {
   }
 
   Executor getExecutor() {
-    return executor;
+    return this.executor;
   }
 
   public UserData getUserInfo(long userId) {
-    return userCache.get(userId);
+    return this.userCache.get(userId);
   }
 
   public void saveAll() {
-    userCache.invalidateAll();
+    this.userCache.invalidateAll();
   }
 
   public Path getStoragePath() {

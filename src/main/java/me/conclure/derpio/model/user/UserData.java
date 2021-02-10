@@ -10,11 +10,11 @@ public final class UserData {
   @Expose private long lastXpMessageTimestamp;
 
   public void addXP(long amount) {
-    this.setXP(xp + amount);
+    this.setXP(this.xp + amount);
   }
 
   public long getXP() {
-    return xp;
+    return this.xp;
   }
 
   public void setXP(long amount) {
@@ -28,7 +28,7 @@ public final class UserData {
 
   public boolean hasChatClaimableXp() {
     long now = System.currentTimeMillis();
-    long last = lastXpMessageTimestamp;
+    long last = this.lastXpMessageTimestamp;
     long difference = now - last;
 
     TimeUnit cooldownUnit = BotInfo.CHAT_XP_COOLDOWN_UNIT;
@@ -40,7 +40,7 @@ public final class UserData {
   }
 
   public long getLastXpMessageTimestamp() {
-    return lastXpMessageTimestamp;
+    return this.lastXpMessageTimestamp;
   }
 
   public void setLastXpMessageTimestamp(long timestamp) {

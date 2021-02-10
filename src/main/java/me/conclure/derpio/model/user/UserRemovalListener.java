@@ -28,7 +28,7 @@ public final class UserRemovalListener implements RemovalListener<Long, UserData
     CompletableFuture.runAsync(
             () -> {
               // resolves a path for the specified user
-              Path userPath = userManager.getStoragePath().resolve(userID + ".json");
+              Path userPath = this.userManager.getStoragePath().resolve(userID + ".json");
 
               // if a file for the user does not exist then we create it
               if (!Files.exists(userPath)) {
@@ -47,7 +47,7 @@ public final class UserRemovalListener implements RemovalListener<Long, UserData
                 LOGGER.error(e.getMessage(), e);
               }
             },
-            userManager.getExecutor())
+        this.userManager.getExecutor())
         .join();
   }
 }

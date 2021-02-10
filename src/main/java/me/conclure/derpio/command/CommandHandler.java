@@ -30,7 +30,8 @@ public final class CommandHandler {
     this.bot = bot;
     this.commandMap = new HashMap<>();
 
-    this.registerCommandExecutors().forEach(executor -> commandMap.put(executor.getName().toLowerCase(), executor));
+    this.registerCommandExecutors().forEach(executor -> this.commandMap
+        .put(executor.getName().toLowerCase(), executor));
   }
 
   private Stream<CommandExecutor> registerCommandExecutors() {
@@ -70,7 +71,7 @@ public final class CommandHandler {
     String node = line[0].substring(1);
 
     //get command executor from the root node
-    CommandExecutor executor = commandMap.get(node.toLowerCase());
+    CommandExecutor executor = this.commandMap.get(node.toLowerCase());
 
     //ensures the command executor is present corresponding to the root node provided
     if (executor == null) {
@@ -82,7 +83,7 @@ public final class CommandHandler {
 
     //tries to execute command and retrieve a result
     try {
-      result = executor.execute(bot, event, Arrays.copyOfRange(line, 1, line.length));
+      result = executor.execute(this.bot, event, Arrays.copyOfRange(line, 1, line.length));
     } catch (Exception e) {
       e = new CommandException(e);
       LOGGER.error(e.getMessage(), e);

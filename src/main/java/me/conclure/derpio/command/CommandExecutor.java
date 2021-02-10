@@ -34,15 +34,15 @@ public abstract class CommandExecutor {
     }
 
     ResultType getType() {
-      return resultType;
+      return this.resultType;
     }
 
     String[] getArgs() {
-      return args;
+      return this.args;
     }
 
     Runnable getCallback() {
-      return callback;
+      return this.callback;
     }
 
     public Result setCallback(Runnable action) {

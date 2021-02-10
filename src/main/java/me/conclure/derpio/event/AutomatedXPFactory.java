@@ -44,7 +44,7 @@ public final class AutomatedXPFactory {
       return;
     }
 
-    UserManager userManager = bot.getUserManager();
+    UserManager userManager = this.bot.getUserManager();
     long userId = user.getIdLong();
     UserData userData = userManager.getUserInfo(userId);
 
