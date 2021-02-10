@@ -115,19 +115,30 @@ public final class CommandHandler {
       case INVALID_ARGUMENT:
         {
           channel
-              .sendMessage("Encountered invalid argument whilst performing this command.")
+              .sendMessage("Encountered an invalid argument whilst performing this command.")
               .delay(10, TimeUnit.SECONDS)
               .flatMap(Message::delete)
               .queue();
+          break;
         }
       case UNKNOWN_ARGUMENT:
         {
           channel
-              .sendMessage("Encountered unknown argument whilst performing this command.")
+              .sendMessage("Encountered an unknown argument whilst performing this command.")
               .delay(10, TimeUnit.SECONDS)
               .flatMap(Message::delete)
               .queue();
+          break;
         }
+      case MISSING_ARGUMENT:
+      {
+        channel
+            .sendMessage("Encountered a missing argument whilst performing this command.")
+            .delay(10, TimeUnit.SECONDS)
+            .flatMap(Message::delete)
+            .queue();
+        break;
+      }
     }
 
     Runnable callback = result.getCallback();

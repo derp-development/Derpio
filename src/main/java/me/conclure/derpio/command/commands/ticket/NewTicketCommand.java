@@ -14,7 +14,7 @@ public final class NewTicketCommand extends CommandExecutor {
   @Override
   protected Result execute(Bot bot, GuildMessageReceivedEvent event, String[] args) {
     if (args.length == 0) {
-      return ResultType.INVALID_ARGUMENT.toResult();
+      return ResultType.MISSING_ARGUMENT.toResult();
     }
 
     String ticketName = args[0];

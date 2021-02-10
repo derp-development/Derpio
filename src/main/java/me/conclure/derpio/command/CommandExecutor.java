@@ -13,6 +13,7 @@ public abstract class CommandExecutor {
   protected enum ResultType {
     UNKNOWN_ARGUMENT,
     INVALID_ARGUMENT,
+    MISSING_ARGUMENT,
     SUCCESS,
     UNEXPECTED_ERROR,
     NO_PERMISSION;

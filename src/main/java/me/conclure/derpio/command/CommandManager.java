@@ -21,7 +21,7 @@ public abstract class CommandManager extends CommandExecutor {
   @Override
   protected Result execute(Bot bot, GuildMessageReceivedEvent event, String[] args) {
     if (args.length == 0) {
-      return ResultType.INVALID_ARGUMENT.toResult();
+      return this.execute(bot, event);
     }
 
     CommandExecutor executor = commandMap.get(args[0].toLowerCase());
@@ -31,5 +31,9 @@ public abstract class CommandManager extends CommandExecutor {
     }
 
     return executor.execute(bot,event,Arrays.copyOfRange(args,1,args.length));
+  }
+
+  protected Result execute(Bot bot, GuildMessageReceivedEvent event) {
+    return ResultType.MISSING_ARGUMENT.toResult();
   }
 }
