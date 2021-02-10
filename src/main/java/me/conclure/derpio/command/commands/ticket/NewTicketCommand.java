@@ -17,7 +17,7 @@ public final class NewTicketCommand extends CommandExecutor {
       return ResultType.MISSING_ARGUMENT.toResult();
     }
 
-    String ticketName = args[0];
+    var ticketName = args[0];
 
     event.getChannel().sendMessage(ticketName).queue();
     return ResultType.SUCCESS.toResult();

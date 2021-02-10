@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.LongSerializationPolicy;
 import java.util.concurrent.TimeUnit;
 
-//use interface to declare constants with reduced boilerplate
+// use interface to declare constants with reduced boilerplate
 public interface BotInfo {
   String PREFIX = "/";
 

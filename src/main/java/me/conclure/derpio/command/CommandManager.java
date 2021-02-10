@@ -13,7 +13,8 @@ public abstract class CommandManager extends CommandExecutor {
 
   protected CommandManager() {
     this.commandMap = new HashMap<>();
-    registerCommandExecutors().forEach(executor -> commandMap.put(executor.getName().toLowerCase(), executor));
+    registerCommandExecutors()
+        .forEach(executor -> commandMap.put(executor.getName().toLowerCase(), executor));
   }
 
   protected abstract Stream<CommandExecutor> registerCommandExecutors();
@@ -24,13 +25,13 @@ public abstract class CommandManager extends CommandExecutor {
       return this.execute(bot, event);
     }
 
-    CommandExecutor executor = commandMap.get(args[0].toLowerCase());
+    var executor = commandMap.get(args[0].toLowerCase());
 
     if (executor == null) {
       return ResultType.UNKNOWN_ARGUMENT.toResult();
     }
 
-    return executor.execute(bot,event,Arrays.copyOfRange(args,1,args.length));
+    return executor.execute(bot, event, Arrays.copyOfRange(args, 1, args.length));
   }
 
   protected Result execute(Bot bot, GuildMessageReceivedEvent event) {

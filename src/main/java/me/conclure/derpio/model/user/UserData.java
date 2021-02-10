@@ -1,7 +1,6 @@
 package me.conclure.derpio.model.user;
 
 import com.google.gson.annotations.Expose;
-import java.util.concurrent.TimeUnit;
 import me.conclure.derpio.BotInfo;
 
 public final class UserData {
@@ -27,14 +26,14 @@ public final class UserData {
   }
 
   public boolean hasChatClaimableXp() {
-    long now = System.currentTimeMillis();
-    long last = lastXpMessageTimestamp;
-    long difference = now - last;
+    var now = System.currentTimeMillis();
+    var last = lastXpMessageTimestamp;
+    var difference = now - last;
 
-    TimeUnit cooldownUnit = BotInfo.CHAT_XP_COOLDOWN_UNIT;
-    long cooldownDuration = BotInfo.CHAT_XP_COOLDOWN_DURATION;
+    var cooldownUnit = BotInfo.CHAT_XP_COOLDOWN_UNIT;
+    var cooldownDuration = BotInfo.CHAT_XP_COOLDOWN_DURATION;
 
-    long minimumDifference = cooldownUnit.toMillis(cooldownDuration);
+    var minimumDifference = cooldownUnit.toMillis(cooldownDuration);
 
     return minimumDifference <= difference;
   }

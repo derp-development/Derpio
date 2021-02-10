@@ -1,11 +1,9 @@
 package me.conclure.derpio.model.user;
 
 import com.github.benmanes.caffeine.cache.CacheLoader;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
 import me.conclure.derpio.BotInfo;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -26,11 +24,11 @@ public final class UserCacheLoader implements CacheLoader<Long, UserData> {
   public @Nullable UserData load(@NonNull Long userId) {
     return CompletableFuture.supplyAsync(
             () -> {
-              //resolves a path for the specified user
-              Path userPath = userManager.getStoragePath().resolve(userId + ".json");
+              // resolves a path for the specified user
+              var userPath = userManager.getStoragePath().resolve(userId + ".json");
               UserData result = null;
 
-              //if a file for the user does not exist then we create it
+              // if a file for the user does not exist then we create it
               if (!Files.exists(userPath)) {
                 try {
                   Files.createFile(userPath);
@@ -39,15 +37,14 @@ public final class UserCacheLoader implements CacheLoader<Long, UserData> {
                 }
               }
 
-              //read the file and parse it through json
-              try (BufferedReader reader =
-                  Files.newBufferedReader(userPath, StandardCharsets.UTF_8)) {
+              // read the file and parse it through json
+              try (var reader = Files.newBufferedReader(userPath, StandardCharsets.UTF_8)) {
                 result = BotInfo.GSON.fromJson(reader, UserData.class);
               } catch (IOException e) {
                 LOGGER.error(e.getMessage(), e);
               }
 
-              //if the parsed result is null, construct a new data for the user
+              // if the parsed result is null, construct a new data for the user
               if (result == null) {
                 result = new UserData();
               }

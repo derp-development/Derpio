@@ -17,8 +17,7 @@ public final class ProductCommand extends CommandExecutor {
       return ResultType.INVALID_ARGUMENT.toResult();
     }
 
-    String productLabel = args[0];
-    
+    var productLabel = args[0];
 
     return null;
   }
