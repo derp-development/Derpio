@@ -10,8 +10,8 @@ public final class Main {
   private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
   public static void main(String[] args) {
-    // declare argument specs
-    var parser =
+    //declare argument specs
+    OptionParser parser =
         new OptionParser() {
           {
             this.accepts("token", "Bot token").withRequiredArg().required();
@@ -20,14 +20,14 @@ public final class Main {
 
     OptionSet options = null;
 
-    // parsing arguments
+    //parsing arguments
     try {
       options = parser.parse(args);
     } catch (OptionException e) {
       LOGGER.error("", e);
     }
 
-    // start of bot
+    //start of bot
     Main.start(options);
   }
 

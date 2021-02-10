@@ -15,7 +15,7 @@ public final class Product {
   }
 
   Product(String name, double price) {
-    this(name, price, null);
+    this(name,price,null);
   }
 
   public String getImageUrl() {

@@ -34,10 +34,10 @@ public final class Bot {
 
   static void init(OptionSet optionSet) {
     try {
-      // getting token from arguments
-      var token = (String) optionSet.valueOf("token");
-      // load bot on new thread
-      var thread =
+      //getting token from arguments
+      String token = (String) optionSet.valueOf("token");
+      //load bot on new thread
+      Thread thread =
           new Thread(
               () -> {
                 try {

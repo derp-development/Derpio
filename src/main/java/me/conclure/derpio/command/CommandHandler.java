@@ -13,6 +13,7 @@ import me.conclure.derpio.command.commands.StopCommand;
 import me.conclure.derpio.command.commands.UserInfoCommand;
 import me.conclure.derpio.command.commands.ticket.TicketCommand;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.SubscribeEvent;
 import org.apache.commons.lang3.StringUtils;
@@ -55,7 +56,7 @@ public final class CommandHandler {
     }
 
     //raw string content from message
-    var content = event.getMessage().getContentRaw();
+    String content = event.getMessage().getContentRaw();
 
     //ensures the message is a valid command line
     if (!content.startsWith(BotInfo.PREFIX)) {
@@ -63,13 +64,13 @@ public final class CommandHandler {
     }
 
     //splits spaces
-    var line = StringUtils.split(content, " ");
+    String[] line = StringUtils.split(content, " ");
 
     //get root node
-    var node = line[0].substring(1);
+    String node = line[0].substring(1);
 
     //get command executor from the root node
-    var executor = commandMap.get(node.toLowerCase());
+    CommandExecutor executor = commandMap.get(node.toLowerCase());
 
     //ensures the command executor is present corresponding to the root node provided
     if (executor == null) {
@@ -77,7 +78,7 @@ public final class CommandHandler {
     }
 
     //fallback result in case command execution would fail
-    var result = CommandExecutor.DEFAULT_RESULT;
+    CommandExecutor.Result result = CommandExecutor.DEFAULT_RESULT;
 
     //tries to execute command and retrieve a result
     try {
@@ -89,48 +90,38 @@ public final class CommandHandler {
 
     LOGGER.debug("Command: " + node + " - " + result.getType());
 
-    var channel = event.getChannel();
+    MessageChannel channel = event.getChannel();
 
     //post behaviour depending on command execution result
     switch (result.getType()) {
-      case UNEXPECTED_ERROR -> {
-        channel
-            .sendMessage("An unexpected error occurred whilst performing this command.")
-            .delay(10, TimeUnit.SECONDS)
-            .flatMap(Message::delete)
-            .queue();
-      }
-      case NO_PERMISSION -> {
-        channel
-            .sendMessage("You are not permitted to perform this command.")
-            .delay(10, TimeUnit.SECONDS)
-            .flatMap(Message::delete)
-            .queue();
-      }
-      case INVALID_ARGUMENT -> {
-        channel
-            .sendMessage("Encountered an invalid argument whilst performing this command.")
-            .delay(10, TimeUnit.SECONDS)
-            .flatMap(Message::delete)
-            .queue();
-      }
-      case UNKNOWN_ARGUMENT -> {
-        channel
-            .sendMessage("Encountered an unknown argument whilst performing this command.")
-            .delay(10, TimeUnit.SECONDS)
-            .flatMap(Message::delete)
-            .queue();
-      }
-      case MISSING_ARGUMENT -> {
-        channel
-            .sendMessage("Encountered a missing argument whilst performing this command.")
-            .delay(10, TimeUnit.SECONDS)
-            .flatMap(Message::delete)
-            .queue();
-      }
+      case UNEXPECTED_ERROR -> channel
+          .sendMessage("An unexpected error occurred whilst performing this command.")
+          .delay(10, TimeUnit.SECONDS)
+          .flatMap(Message::delete)
+          .queue();
+      case NO_PERMISSION -> channel
+          .sendMessage("You are not permitted to perform this command.")
+          .delay(10, TimeUnit.SECONDS)
+          .flatMap(Message::delete)
+          .queue();
+      case INVALID_ARGUMENT -> channel
+          .sendMessage("Encountered an invalid argument whilst performing this command.")
+          .delay(10, TimeUnit.SECONDS)
+          .flatMap(Message::delete)
+          .queue();
+      case UNKNOWN_ARGUMENT -> channel
+          .sendMessage("Encountered an unknown argument whilst performing this command.")
+          .delay(10, TimeUnit.SECONDS)
+          .flatMap(Message::delete)
+          .queue();
+      case MISSING_ARGUMENT -> channel
+          .sendMessage("Encountered a missing argument whilst performing this command.")
+          .delay(10, TimeUnit.SECONDS)
+          .flatMap(Message::delete)
+          .queue();
     }
 
-    var callback = result.getCallback();
+    Runnable callback = result.getCallback();
 
     if (callback == null) {
       return;

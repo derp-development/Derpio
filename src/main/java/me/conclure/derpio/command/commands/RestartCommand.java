@@ -3,6 +3,7 @@ package me.conclure.derpio.command.commands;
 import me.conclure.derpio.Bot;
 import me.conclure.derpio.BotInfo;
 import me.conclure.derpio.command.CommandExecutor;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public final class RestartCommand extends CommandExecutor {
@@ -19,7 +20,7 @@ public final class RestartCommand extends CommandExecutor {
     }
 
     event.getChannel().sendMessage("Restarting...").complete();
-    var channelId = event.getChannel().getIdLong();
+    long channelId = event.getChannel().getIdLong();
 
     return ResultType.SUCCESS
         .toResult()
@@ -27,7 +28,7 @@ public final class RestartCommand extends CommandExecutor {
             () ->
                 bot.restart(
                     jda -> {
-                      var channel = jda.getTextChannelById(channelId);
+                      TextChannel channel = jda.getTextChannelById(channelId);
 
                       if (channel == null) {
                         return;
