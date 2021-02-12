@@ -10,12 +10,17 @@ public abstract class CommandExecutor {
 
   protected abstract Result execute(Bot bot, GuildMessageReceivedEvent event, String[] args);
 
+  protected String[] getAliases() {
+    return null;
+  }
+
   protected enum ResultType {
     UNKNOWN_ARGUMENT,
     INVALID_ARGUMENT,
     MISSING_ARGUMENT,
     SUCCESS,
     UNEXPECTED_ERROR,
+    BAD_TIMING,
     NO_PERMISSION;
 
     public Result toResult(String... args) {

@@ -1,14 +1,14 @@
 package me.conclure.derpio.model.user;
 
+import com.github.benmanes.caffeine.cache.AsyncLoadingCache;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import com.github.benmanes.caffeine.cache.LoadingCache;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import me.conclure.derpio.BotInfo;
 import me.conclure.derpio.command.CommandHandler;
 import org.slf4j.Logger;
@@ -17,15 +17,11 @@ import org.slf4j.LoggerFactory;
 public final class UserManager {
   private static final Logger LOGGER = LoggerFactory.getLogger(CommandHandler.class);
 
-  private final LoadingCache<Long, UserData> userCache;
-  private final Executor executor;
+  private final AsyncLoadingCache<Long, UserData> userCache;
+  private final ExecutorService executorService;
 
   public UserManager() {
-    this.executor =
-        Executors.newCachedThreadPool(
-            new ThreadFactoryBuilder()
-                .setUncaughtExceptionHandler((t, e) -> LOGGER.error(e.getMessage(), e))
-                .build());
+    this.executorService = Executors.newCachedThreadPool();
 
     if (!Files.exists(this.getStoragePath())) {
       try {
@@ -39,19 +35,28 @@ public final class UserManager {
         Caffeine.newBuilder()
             .removalListener(new UserRemovalListener(this))
             .expireAfterAccess(BotInfo.USER_EXPIRE_ACCESS_DURATION, BotInfo.USER_EXPIRE_ACCESS_UNIT)
-            .build(new UserCacheLoader(this));
+            //.executor(this.executorService)
+            .buildAsync(new UserCacheLoader(this));
   }
 
-  Executor getExecutor() {
-    return this.executor;
-  }
-
-  public UserData getUserInfo(long userId) {
-    return this.userCache.get(userId);
+  public UserData getUserData(long userId) {
+    return this.userCache.get(userId).join();
   }
 
   public void saveAll() {
-    this.userCache.invalidateAll();
+    this.userCache.synchronous().invalidateAll();
+  }
+
+  public void terminate() {
+    this.saveAll();
+    this.executorService.shutdown();
+    try {
+      if (!this.executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS)) {
+        this.executorService.shutdownNow();
+      }
+    } catch (InterruptedException e) {
+      LOGGER.error(e.getMessage(), e);
+    }
   }
 
   public Path getStoragePath() {

@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 import me.conclure.derpio.Bot;
 import me.conclure.derpio.BotInfo;
+import me.conclure.derpio.command.commands.DailyCommand;
 import me.conclure.derpio.command.commands.HelpCommand;
 import me.conclure.derpio.command.commands.RestartCommand;
 import me.conclure.derpio.command.commands.StopCommand;
@@ -30,12 +31,31 @@ public final class CommandHandler {
     this.bot = bot;
     this.commandMap = new HashMap<>();
 
-    this.registerCommandExecutors().forEach(executor -> this.commandMap
-        .put(executor.getName().toLowerCase(), executor));
+    this.registerCommandExecutors().forEach(executor -> {
+      this.register(executor.getName(),executor);
+      String[] aliases = executor.getAliases();
+
+      if (aliases == null) {
+        return;
+      }
+
+      if (aliases.length == 0) {
+        return;
+      }
+
+      for (String alias : aliases) {
+        this.register(alias,executor);
+      }
+    });
+  }
+
+  private void register(String string, CommandExecutor executor) {
+    this.commandMap.put(string.toLowerCase(),executor);
   }
 
   private Stream<CommandExecutor> registerCommandExecutors() {
-    return Stream.of(new HelpCommand(), new StopCommand(), new UserInfoCommand(), new RestartCommand(), new TicketCommand());
+    return Stream.of(new HelpCommand(), new StopCommand(), new UserInfoCommand(),
+        new RestartCommand(), new TicketCommand(), new DailyCommand());
   }
 
   @SubscribeEvent
@@ -117,6 +137,11 @@ public final class CommandHandler {
           .queue();
       case MISSING_ARGUMENT -> channel
           .sendMessage("Encountered a missing argument whilst performing this command.")
+          .delay(10, TimeUnit.SECONDS)
+          .flatMap(Message::delete)
+          .queue();
+      case BAD_TIMING -> channel
+          .sendMessage("The attempted command may not be performed at the moment.")
           .delay(10, TimeUnit.SECONDS)
           .flatMap(Message::delete)
           .queue();

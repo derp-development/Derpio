@@ -1,6 +1,5 @@
 package me.conclure.derpio.event;
 
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import me.conclure.derpio.Bot;
 import me.conclure.derpio.BotInfo;
@@ -10,11 +9,11 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.SubscribeEvent;
 
-public final class AutomatedXPFactory {
+public final class AutomatedExpFactory {
 
   private final Bot bot;
 
-  public AutomatedXPFactory(Bot bot) {
+  public AutomatedExpFactory(Bot bot) {
     this.bot = bot;
   }
 
@@ -46,17 +45,8 @@ public final class AutomatedXPFactory {
 
     UserManager userManager = this.bot.getUserManager();
     long userId = user.getIdLong();
-    UserData userData = userManager.getUserInfo(userId);
+    UserData userData = userManager.getUserData(userId);
 
-    // ensures user can claim xp again
-    if (!userData.hasChatClaimableXp()) {
-      return;
-    }
-
-    // generates random amount of xp and then adds it to the user
-    Random random = ThreadLocalRandom.current();
-    int amount = random.nextInt(BotInfo.CHAT_XP_MAX) + BotInfo.CHAT_XP_MIN;
-    userData.addXP(amount);
-    userData.updateLastXpMessageTimestamp();
+    userData.claimChatExp(ThreadLocalRandom.current());
   }
 }

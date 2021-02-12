@@ -13,6 +13,8 @@ public final class ProductCommand extends CommandExecutor {
 
   @Override
   protected Result execute(Bot bot, GuildMessageReceivedEvent event, String[] args) {
+    bot.awaitReady();
+
     if (args.length == 0) {
       return ResultType.INVALID_ARGUMENT.toResult();
     }

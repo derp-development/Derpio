@@ -8,13 +8,32 @@ import me.conclure.derpio.Bot;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public abstract class CommandManager extends CommandExecutor {
-
   private final Map<String, CommandExecutor> commandMap;
 
   protected CommandManager() {
     this.commandMap = new HashMap<>();
     this.registerCommandExecutors()
-        .forEach(executor -> this.commandMap.put(executor.getName().toLowerCase(), executor));
+        .forEach(
+            executor -> {
+              this.register(executor.getName(), executor);
+              String[] aliases = executor.getAliases();
+
+              if (aliases == null) {
+                return;
+              }
+
+              if (aliases.length == 0) {
+                return;
+              }
+
+              for (String alias : aliases) {
+                this.register(alias, executor);
+              }
+            });
+  }
+
+  private void register(String string, CommandExecutor executor) {
+    this.commandMap.put(string, executor);
   }
 
   protected abstract Stream<CommandExecutor> registerCommandExecutors();

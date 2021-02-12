@@ -14,11 +14,16 @@ public final class StopCommand extends CommandExecutor {
 
   @Override
   public Result execute(Bot bot, GuildMessageReceivedEvent event, String[] args) {
+    if (!bot.isReady()) {
+      return ResultType.BAD_TIMING.toResult();
+    }
+
     if (event.getAuthor().getIdLong() != BotInfo.OWNER_ID) {
       return ResultType.NO_PERMISSION.toResult();
     }
+
     event.getChannel().sendMessage("Shutting down...").complete();
-    bot.shutdown();
-    return ResultType.SUCCESS.toResult();
+
+    return ResultType.SUCCESS.toResult().setCallback(bot::shutdown);
   }
 }

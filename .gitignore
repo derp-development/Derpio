@@ -1,4 +1,6 @@
 /.gradle/
 /build/
-/.idea/
-!/.idea/inspectionProfiles/Project_Default.xml
+/.idea/modules/
+/.idea/.name
+/.idea/vcs.xml
+/.idea/uiDesigner.xml

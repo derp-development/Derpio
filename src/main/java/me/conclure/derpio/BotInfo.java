@@ -15,10 +15,14 @@ public interface BotInfo {
   TimeUnit USER_EXPIRE_ACCESS_UNIT = TimeUnit.MINUTES;
   long USER_EXPIRE_ACCESS_DURATION = 5;
 
-  TimeUnit CHAT_XP_COOLDOWN_UNIT = TimeUnit.MINUTES;
-  long CHAT_XP_COOLDOWN_DURATION = 2;
-  int CHAT_XP_MIN = 1;
-  int CHAT_XP_MAX = 20;
+  TimeUnit CHAT_EXP_COOLDOWN_UNIT = TimeUnit.MINUTES;
+  long CHAT_EXP_COOLDOWN_DURATION = 2;
+  int CHAT_EXP_MIN = 1;
+  int CHAT_EXP_MAX = 20;
+
+  TimeUnit DAILY_EXP_SESSION_UNIT = TimeUnit.DAYS;
+  long DAILY_EXP_SESSION_DURATION = 1;
+  long DAILY_EXP_AMOUNT = 5;
 
   Gson GSON =
       new GsonBuilder()

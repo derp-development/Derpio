@@ -15,6 +15,10 @@ public final class RestartCommand extends CommandExecutor {
 
   @Override
   protected Result execute(Bot bot, GuildMessageReceivedEvent event, String[] args) {
+    if (!bot.isReady()) {
+      return ResultType.BAD_TIMING.toResult();
+    }
+
     if (event.getAuthor().getIdLong() != BotInfo.OWNER_ID) {
       return ResultType.NO_PERMISSION.toResult();
     }

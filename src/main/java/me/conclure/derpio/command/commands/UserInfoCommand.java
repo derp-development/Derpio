@@ -17,15 +17,22 @@ public final class UserInfoCommand extends CommandExecutor {
   }
 
   @Override
+  protected String[] getAliases() {
+    return new String[] {"userdata", "user"};
+  }
+
+  @Override
   public Result execute(Bot bot, GuildMessageReceivedEvent event, String[] args) {
+    bot.awaitReady();
+
     User author = event.getAuthor();
     long userId = author.getIdLong();
     UserManager userManager = bot.getUserManager();
-    UserData userData = userManager.getUserInfo(userId);
+    UserData userData = userManager.getUserData(userId);
     MessageEmbed embed =
         new EmbedBuilder()
             .setTitle(author.getAsTag())
-            .addField("XP", String.valueOf(userData.getXP()), false)
+            .addField("Exp", String.valueOf(userData.getExp()), false)
             .build();
 
     return ResultType.SUCCESS

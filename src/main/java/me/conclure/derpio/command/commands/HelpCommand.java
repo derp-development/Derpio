@@ -13,6 +13,8 @@ public final class HelpCommand extends CommandExecutor {
 
   @Override
   public Result execute(Bot bot, GuildMessageReceivedEvent event, String[] args) {
+    bot.awaitReady();
+
     event.getChannel().sendMessage("niffa").queue();
     return ResultType.SUCCESS.toResult();
   }

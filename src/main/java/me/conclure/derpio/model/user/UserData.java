@@ -1,53 +1,60 @@
 package me.conclure.derpio.model.user;
 
 import com.google.gson.annotations.Expose;
-import java.util.concurrent.TimeUnit;
+import java.util.Random;
 import me.conclure.derpio.BotInfo;
+import me.conclure.derpio.model.user.content.ChatExpManager;
+import me.conclure.derpio.model.user.content.DailyManager;
+import me.conclure.derpio.model.user.xp.ExpStorage;
 
 public final class UserData {
+  @Expose private final ExpStorage expStorage;
+  @Expose private final DailyManager dailyManager;
+  @Expose private final ChatExpManager chatExpManager;
 
-  @Expose private long xp;
-  @Expose private long lastXpMessageTimestamp;
-
-  public void addXP(long amount) {
-    this.setXP(this.xp + amount);
+  public UserData(ExpStorage expStorage, ChatExpManager chatExpManager, DailyManager dailyManager) {
+    this.expStorage = expStorage;
+    this.chatExpManager = chatExpManager;
+    this.dailyManager = dailyManager;
   }
 
-  public long getXP() {
-    return this.xp;
+  public static UserData newDefault() {
+    return new UserData(
+        ExpStorage.newDefault(), ChatExpManager.newDefault(), DailyManager.newDefault());
   }
 
-  public void setXP(long amount) {
-    this.xp = amount;
+  public ExpStorage getExpStorage() {
+    return this.expStorage;
+  }
+
+  public long getExp() {
+    return this.expStorage.getExp();
+  }
+
+  public void increaseExp(long amount) {
+    this.expStorage.addExp(amount);
+  }
+
+  public long claimDailyExp() {
+    boolean claimed = this.dailyManager.redeem();
+
+    if (claimed) {
+      this.increaseExp(BotInfo.DAILY_EXP_AMOUNT);
+    }
+
+    return claimed ? 0L : this.dailyManager.getCurrentSession().getTimeUntilExpire();
+  }
+
+  public void claimChatExp(Random random) {
+    if (this.chatExpManager.redeem()) {
+      long amount = random.nextInt(BotInfo.CHAT_EXP_MAX) + BotInfo.CHAT_EXP_MIN;
+      this.increaseExp(amount);
+    }
   }
 
   public void reset() {
-    this.setXP(0L);
-    this.setLastXpMessageTimestamp(0L);
-  }
-
-  public boolean hasChatClaimableXp() {
-    long now = System.currentTimeMillis();
-    long last = this.lastXpMessageTimestamp;
-    long difference = now - last;
-
-    TimeUnit cooldownUnit = BotInfo.CHAT_XP_COOLDOWN_UNIT;
-    long cooldownDuration = BotInfo.CHAT_XP_COOLDOWN_DURATION;
-
-    long minimumDifference = cooldownUnit.toMillis(cooldownDuration);
-
-    return minimumDifference <= difference;
-  }
-
-  public long getLastXpMessageTimestamp() {
-    return this.lastXpMessageTimestamp;
-  }
-
-  public void setLastXpMessageTimestamp(long timestamp) {
-    this.lastXpMessageTimestamp = timestamp;
-  }
-
-  public void updateLastXpMessageTimestamp() {
-    this.setLastXpMessageTimestamp(System.currentTimeMillis());
+    this.expStorage.reset();
+    this.dailyManager.reset();
+    this.chatExpManager.reset();
   }
 }
