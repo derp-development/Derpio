@@ -9,9 +9,6 @@ version '1.0'
 mainClassName = 'me.conclure.derpio.Main'
 sourceCompatibility = targetCompatibility = JavaVersion.VERSION_14
 
-//Set your token here
-token = System.getenv("derpioToken")
-
 shadowJar {
     archiveFileName.set("Bot.jar")
 }
@@ -45,12 +42,39 @@ dependencies {
      */
 }
 
-task runBot(type: JavaExec) {
+task cloneJar(group: "bot") {
     dependsOn shadowJar
-    workingDir file("./build/libs")
+    def dir = file("./run/")
+
+    doFirst {
+        if (!dir.exists()) {
+            dir.mkdirs()
+        }
+    }
+
+    doLast {
+        copy {
+            from shadowJar.archiveFile
+            into dir
+        }
+    }
+}
+
+task runBot(type: JavaExec, group: "bot") {
+    //Declare your token here
+    //Example: `String token = "xxxx"`
+    String token = derpioToken
+
+    workingDir file("./run/")
     main "-jar"
     standardInput System.in
+
     args "Bot.jar", "-token", token
+}
+
+task cloneRunBot(group: "bot") {
+    dependsOn cloneJar
+    finalizedBy runBot
 }
 
 /*
