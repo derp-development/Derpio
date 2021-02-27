@@ -33,7 +33,7 @@ public final class DailyCommand extends CommandExecutor {
     bot.awaitReady();
 
     User sender = event.getAuthor();
-    UserManager userManager = bot.getUserManager();
+    UserManager userManager = bot.userManager();
     long userId = sender.getIdLong();
     UserData userData = userManager.getUserData(userId);
     TextChannel channel = event.getChannel();

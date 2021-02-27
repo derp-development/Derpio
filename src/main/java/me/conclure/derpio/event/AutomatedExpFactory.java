@@ -43,7 +43,7 @@ public final class AutomatedExpFactory {
       return;
     }
 
-    UserManager userManager = this.bot.getUserManager();
+    UserManager userManager = this.bot.userManager();
     long userId = user.getIdLong();
     UserData userData = userManager.getUserData(userId);
 

@@ -27,7 +27,7 @@ public final class UserInfoCommand extends CommandExecutor {
 
     User author = event.getAuthor();
     long userId = author.getIdLong();
-    UserManager userManager = bot.getUserManager();
+    UserManager userManager = bot.userManager();
     UserData userData = userManager.getUserData(userId);
     MessageEmbed embed =
         new EmbedBuilder()

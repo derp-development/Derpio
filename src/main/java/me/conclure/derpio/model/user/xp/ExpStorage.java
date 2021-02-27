@@ -1,7 +1,6 @@
 package me.conclure.derpio.model.user.xp;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 public final class ExpStorage {
 

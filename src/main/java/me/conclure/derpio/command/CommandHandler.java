@@ -54,8 +54,24 @@ public final class CommandHandler {
   }
 
   private Stream<CommandExecutor> registerCommandExecutors() {
-    return Stream.of(new HelpCommand(), new StopCommand(), new UserInfoCommand(),
-        new RestartCommand(), new TicketCommand(), new DailyCommand());
+    return Stream.of(
+        new HelpCommand(),
+        new StopCommand(),
+        new UserInfoCommand(),
+        new RestartCommand(),
+        new TicketCommand(),
+        new DailyCommand(),
+        new CommandExecutor() {
+          @Override
+          protected String getName() {
+            return "d";
+          }
+
+          @Override
+          protected Result execute(Bot bot, GuildMessageReceivedEvent event, String[] args) {
+            return bot.userManager().;
+          }
+        });
   }
 
   @SubscribeEvent

@@ -1,7 +1,6 @@
 package me.conclure.derpio.util;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Nonnegative;
 

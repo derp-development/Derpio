@@ -1,7 +1,6 @@
 package me.conclure.derpio.model.user.content;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 import me.conclure.derpio.BotInfo;
 import me.conclure.derpio.util.Session;
 

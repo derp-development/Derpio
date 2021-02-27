@@ -22,17 +22,18 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'org.jetbrains:annotations:20.1.0'
     runtimeOnly 'ch.qos.logback:logback-classic:1.2.3'
+    implementation 'org.checkerframework:checker-qual:3.8.0'
+    implementation 'org.jetbrains:annotations:20.1.0'
     implementation 'net.dv8tion:JDA:4.2.0_228'
     implementation 'com.google.guava:guava:30.1-jre'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.github.ben-manes.caffeine:caffeine:2.8.8'
-    implementation 'com.github.ben-manes.caffeine:guava:2.8.8'
     implementation 'net.sf.jopt-simple:jopt-simple:6.0-alpha-3'
     implementation 'org.apache.commons:commons-lang3:3.11'
     implementation 'commons-io:commons-io:2.8.0'
     implementation 'net.sf.trove4j:trove4j:3.0.3'
+    implementation 'org.spongepowered:configurate-gson:4.0.0'
 
     // Test
     /*

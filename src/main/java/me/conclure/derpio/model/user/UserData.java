@@ -1,13 +1,22 @@
 package me.conclure.derpio.model.user;
 
-import com.google.gson.annotations.Expose;
-import java.util.Random;
-import me.conclure.derpio.BotInfo;
-import me.conclure.derpio.model.user.content.ChatExpManager;
-import me.conclure.derpio.model.user.content.DailyManager;
-import me.conclure.derpio.model.user.xp.ExpStorage;
-
 public final class UserData {
+  private final long userId;
+  private long xp;
+
+  public UserData(long userId) {
+    this.userId = userId;
+  }
+
+  public long getXP() {
+    return this.xp;
+  }
+
+  public void setXP(long xp) {
+    this.xp = xp;
+  }
+
+  /*
   @Expose private final ExpStorage expStorage;
   @Expose private final DailyManager dailyManager;
   @Expose private final ChatExpManager chatExpManager;
@@ -57,4 +66,6 @@ public final class UserData {
     this.dailyManager.reset();
     this.chatExpManager.reset();
   }
+
+   */
 }
